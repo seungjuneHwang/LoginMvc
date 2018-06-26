@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.team0.dao.UserDAO;
 import com.team0.vo.UserVO;
@@ -45,7 +46,13 @@ public class LoginProc extends HttpServlet {
 		String path = request.getContextPath();
 		PrintWriter out = response.getWriter();  // 화면 출력
 		try {
-			if (UserDAO.GetUser(vo)) {
+//			if (UserDAO.GetUser(vo)) {
+			UserVO uvo  = UserDAO.GetUser(email, pw);
+			if (uvo != null) {
+				// 로그인 성공시 유지 시켜 주기 위해 세션 값 설정
+				HttpSession session = request.getSession();
+				session.setAttribute("email", uvo.getEmail());   // 값을 저장
+				session.setAttribute("name", uvo.getName());   // 값을 저장
 				// 로그인 성공
 				out.println("YES");
 				//response.sendRedirect(path + "/main.tm0");

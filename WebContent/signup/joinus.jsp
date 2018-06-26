@@ -85,12 +85,14 @@ function sendData(path) {
     	        pw: pw
     	    },
     	    function(data, status){
-    	    	console.log("status" + data);
-    	    	console.log("data" + data);
+    	    	//console.log("status" + data);
+    	    	//console.log("data" + data);
     	    	if (status.trim() == "success" && data.trim() == "OK") {
-    	    		console.log("데이터 저장 성공");
+    	    		//console.log("데이터 저장 성공");
+    	    		location.href="<%=path%>/login.tm0";
     	    	} else {
-    	    		console.log("데이터 저장 실패");
+    	    		//console.log("데이터 저장 실패");
+    	    		alert("가입에 실패 하였습니다.\n시스템 관리자에게 문의 바람");
     	    	}
     	        //alert("Data: " + data + "\nStatus: " + status);
     	    });

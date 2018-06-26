@@ -26,6 +26,33 @@ public class UserDAO {
 		db.close();
 	}
 	
+	// String email, pw 를 매개변수로 넣어서 UserVO 값을 반환
+	// 들어가는 매개 변수 String email, String pw
+	// 리턴 받는 형은 UserVO
+	public static UserVO GetUser(String email, String pw) throws Exception {
+		// DB 접속
+		Connection db = DBConn.getConnection();
+		// 쿼리 날려서 유저 정보를 검색
+		// select * from user where email = ?
+//		String sql  = "select * from user where email = ?";
+		String sql  = "select * from user where email = ? and pw = ?";
+		PreparedStatement pstmt = db.prepareStatement(sql);
+		pstmt.setString(1, email);
+		pstmt.setString(2, pw);
+		
+		UserVO vo = null;
+		ResultSet rs = pstmt.executeQuery();
+		if (rs.next()) {
+			vo = new UserVO();
+			vo.setName(rs.getString("name"));
+			vo.setEmail(rs.getString("email"));
+			vo.setPhone(rs.getString("phone"));
+		}	
+		db.close();
+		return vo;
+	}
+	
+	// vo 객체를 넣어서 email pw 정보 확인
 	public static Boolean GetUser(UserVO vo) throws Exception {
 		// DB 접속
 		Connection db = DBConn.getConnection();

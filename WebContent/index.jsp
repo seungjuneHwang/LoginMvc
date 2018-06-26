@@ -14,7 +14,7 @@
 	
 	<script>
 		//location.href="<%=path%>/joinus.tm0";
-		location.href="<%=path%>/login.tm0";
+		location.href="<%=path%>/main.tm0";
 		//location.href="${pageContext.request.contextPath}/login.tm0";
 	</script>
 </body>

@@ -33,20 +33,21 @@ public class ControllerServlet extends HttpServlet {
 		String url = request.getRequestURL().toString();
 		String url2 = request.getRequestURI();
 //		System.out.println(url);
-//		System.out.println(url2);
+		System.out.println(url2);
 		
 		String [] sub = url.split("/");
 		String [] sub2 = url2.split("/");
-//		int idx = 0;
-//		for (String s : sub2) {
-//			System.out.println(idx++ + s);
-//		}
+		int idx = 0;
+		for (String s : sub2) {
+			System.out.println(idx++ + s);
+		}
 		String subUrl = sub[4];
-		String subUrl2 = sub2[0];
+		String subUrl2 = sub2[sub2.length - 1];
 		
-//		System.out.println(subUrl2);
+		System.out.println(subUrl);
+		System.out.println(subUrl2);
 		String site = null;
-		switch (subUrl) {
+		switch (subUrl2) {
 		case "login.tm0":
 			//response.getWriter().append("login page");
 //			System.out.println(subUrl);
@@ -62,8 +63,19 @@ public class ControllerServlet extends HttpServlet {
 			site = "JoinUsProc";	 // 모델 (model)
 			break;
 		case "main.tm0":
-			// response.getWriter().append("login success");
-			site = "main/index.jsp";   // 뷰 (view)
+//			response.getWriter().append("login success");
+//			if (site == null) {
+//				return;
+//			}
+			site = "MainServlet";   // 뷰 (view)
+			break;
+		case "admin.tm0":
+//			response.getWriter().append("only admin page");
+//			site = "admin/admin.jsp";   // 뷰 (view)
+			site = "AdminServlet";
+			break;
+		case "logout.tm0": 
+			site = "LogoutServlet";   // 로그아웃
 			break;
 		default:
 			response.getWriter().append("error page");
