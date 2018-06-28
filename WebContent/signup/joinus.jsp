@@ -25,8 +25,9 @@
       <input id="control-password-repeat" placeholder="Confirm Password" type="password"/>
     </div>
   </div><a class="form-action"><i class="icon-action"></i></a>
-  <span class="error-text">Please Fill Out This Field</span>
-  <span id="err-text">aa</span>
+<!--   <span class="error-text">Please Fill Out This Field</span> -->
+	<input type="hidden" id="errcheck" />
+  <span id="err-text"></span>
 </form>
 </body>
 <script src="<%=path %>/signup/script.js"></script>

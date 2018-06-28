@@ -46,8 +46,8 @@ public class LoginProc extends HttpServlet {
 		String path = request.getContextPath();
 		PrintWriter out = response.getWriter();  // 화면 출력
 		try {
-//			if (UserDAO.GetUser(vo)) {
-			UserVO uvo  = UserDAO.GetUser(email, pw);
+//			if (UserDAO.getUser(vo)) {
+			UserVO uvo  = UserDAO.getUser(email, pw);
 			if (uvo != null) {
 				// 로그인 성공시 유지 시켜 주기 위해 세션 값 설정
 				HttpSession session = request.getSession();
@@ -67,11 +67,11 @@ public class LoginProc extends HttpServlet {
 		}   // vo를 담아서 전달.
 		
 		// email, pw 만 전달 해도 되고
-//		UserDAO.GetUser(email, pw);   // String 값 전달
+//		UserDAO.getUser(email, pw);   // String 값 전달
 		
 		// UserDAO 에 InsertUser 매소드를 만든거 처럼
 		// UserDAO 클래스 안에 InsertUser 매소드 밑에
-		// GetUser 라는 매소드를 만들어서 그 매소드에서
+		// getUser 라는 매소드를 만들어서 그 매소드에서
 		// DB 에서 select 쿼리 문으로 이메일 과 패스워드를 검색
 		// 쿼리는 : select * from user where email = ?
 		// ID가 있는 사용자 정보를 받아 와서 

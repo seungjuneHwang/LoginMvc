@@ -77,6 +77,14 @@ public class ControllerServlet extends HttpServlet {
 		case "logout.tm0": 
 			site = "LogoutServlet";   // 로그아웃
 			break;
+		case "emailcheck.tm0": 
+			site = "EmailCheckServlet";   // 이메일 체크
+			break;
+			
+		case "idcheck.tm0": 
+			site = "IDCheckServlet";   // ID 체크
+			break;
+		
 		default:
 			response.getWriter().append("error page");
 			System.out.println("잘못된 URL");

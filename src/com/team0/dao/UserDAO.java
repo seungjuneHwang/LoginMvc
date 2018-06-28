@@ -3,6 +3,7 @@ package com.team0.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.team0.db.DBConn;
@@ -26,10 +27,29 @@ public class UserDAO {
 		db.close();
 	}
 	
+	// 메일 중복 체크
+	// 리턴 타입  Boolean
+	// 사용법: if (getUser('aaa')) { 있다} else {없다}
+	public static Boolean EmailCheck(String email) throws Exception {
+		// DB 접속
+		Connection db = DBConn.getConnection();
+		// 쿼리 날려서 유저 정보를 검색
+		String sql  = "select * from user where email = ?";
+		PreparedStatement pstmt = db.prepareStatement(sql);
+		pstmt.setString(1, email);
+		
+		ResultSet rs = pstmt.executeQuery();
+		Boolean ret = rs.next();  // 있으면 true 없으면 false
+		System.out.println(ret);
+		db.close();
+		return ret;
+	}
+	
+	
 	// String email, pw 를 매개변수로 넣어서 UserVO 값을 반환
 	// 들어가는 매개 변수 String email, String pw
 	// 리턴 받는 형은 UserVO
-	public static UserVO GetUser(String email, String pw) throws Exception {
+	public static UserVO getUser(String email, String pw) throws Exception {
 		// DB 접속
 		Connection db = DBConn.getConnection();
 		// 쿼리 날려서 유저 정보를 검색
@@ -53,7 +73,7 @@ public class UserDAO {
 	}
 	
 	// vo 객체를 넣어서 email pw 정보 확인
-	public static Boolean GetUser(UserVO vo) throws Exception {
+	public static Boolean getUser(UserVO vo) throws Exception {
 		// DB 접속
 		Connection db = DBConn.getConnection();
 		// 쿼리 날려서 유저 정보를 검색
@@ -85,4 +105,98 @@ public class UserDAO {
 		db.close();
 		return isLogin;
 	}
+	
+	// 사용자 정보 리스트를 가져 오는 메소드
+	// UserVO는 사용자 하나의 정보
+	// 리스트에 UserVO를 담으면 여러개의 사용자 정보를 받아 올수 있겠네?
+	/*
+	 * getUser를 호출 하면 리스트를 받을 수 있다.
+	 * 사용법: ArrayList<UserVO> getList = UserDAO.getUser();
+	 */
+	public static void testMethod() {
+		System.out.println("여기는 반환값(return 값)이 없는");
+		System.out.println("메소드 이름 앞에 void 를 쓰고");
+	}
+	public static int testMethod2() {
+		System.out.println("숫자를 외부로 전달 하기 위해서는 ");
+		System.out.println("메소드 이름 앞에 int 를 쓰고");
+		// 아래에 return int 변수나 숫자를 써서 전달.
+		return 1;
+	}
+	public static String testMethod3() {
+		System.out.println("숫자를 외부로 전달 하기 위해서는 ");
+		System.out.println("메소드 이름 앞에 int 를 쓰고");
+		// 아래에 return int 변수나 숫자를 써서 전달.
+		return "문자열 전달";
+	}
+	
+	public static ArrayList<String> testMethod4() {
+		// 문자열 리스트를 전달 하기 위해 메소드 이름 앞에
+		// 문자열 리스트를 담는 ArrayList를 쓴다.
+		
+		ArrayList<String> strList = new ArrayList<>();
+		strList.add("문자열1");
+		strList.add("문자열2");
+		strList.add("문자열3");
+		
+		// ArrayList의 참조 변수를 return(전달)
+		return strList;
+	}
+	
+	// UserVO는 사용자 하나의 정보 
+	// 리스트에 UserVO를 담으면 여러 개의 사용자 정보를 받아 올 수 있을듯
+	/*
+	 * getUser를 호출하면 리스트를 받을 수 있다.
+	 * 사용법: ArrayList<UserVO> getLIst = UserDAO.getUser();
+	 */
+	public static ArrayList<UserVO> getUser() throws Exception {
+		// DB 접속
+		Connection db = DBConn.getConnection();
+		// 쿼리 날려서 유저 정보를 검색
+		String sql  = "select * from user";   // 사용자 정보 전체 검색 쿼리
+		PreparedStatement pstmt = db.prepareStatement(sql);  // sql 관리 객체
+		ResultSet rs = pstmt.executeQuery();   // 쿼리를 DB에 날려서 rs에 값을 받음
+		
+		// 사용자 정보를 담을 리스트
+		ArrayList<UserVO> userList = new ArrayList<>();
+
+		// 사용자 정보가 한줄씩 읽어서 user 테이블 정보의 마지막 까지
+		// 읽어서 더이상 읽어올 정보가 없으면 while 문 종료
+		while (rs.next()) {
+			UserVO vo = new UserVO();    // 사용자 정보를 담은 객체
+			vo.setU_idx(rs.getInt("u_idx"));    // 사용자의 키값(PK)
+			vo.setName(rs.getString("name"));   // 사용자의 이름
+			vo.setEmail(rs.getString("email")); // 사용자의 이메일
+			vo.setPhone(rs.getString("phone")); // 사용자의 전화 번호
+			vo.setPw(rs.getString("pw"));;		// 사용자의 비밀번호
+			userList.add(vo);   // 사용자 정보 객체를 리스트에 담기
+		}	
+		db.close();  // db 연결 정보 닫기
+		return userList;   // 사용자 정보 리스트를 메소드 외부로 보내기
+	}
+	
+	/*
+	 * 사용법: 리턴 타입은 Boolean
+	 * ID 가 있으면 true 없으면 false
+	 * Boolean isID = idCheck(id);
+	 * isID 값을 비교
+	 */
+	public static Boolean idCheck(String id) throws Exception {
+		// DB 접속
+		Connection db = DBConn.getConnection();
+		// 쿼리 날려서 유저 정보를 검색
+		// select * from user where email = ?
+		String sql  = "select * from user where email = ?";
+		PreparedStatement pstmt = db.prepareStatement(sql);
+		pstmt.setString(1, id);
+//		Boolean isID = false;   // 검색된 값이 없으면 false(디폴트 값)
+		ResultSet rs = pstmt.executeQuery();
+//		if (rs.next() == true) {
+//			isID = true;
+//		}	
+		Boolean isID  = rs.next();
+		db.close(); 
+		return isID;
+	}
+	
 }
