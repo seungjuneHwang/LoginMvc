@@ -84,6 +84,14 @@ public class ControllerServlet extends HttpServlet {
 		case "idcheck.tm0": 
 			site = "IDCheckServlet";   // ID 체크
 			break;
+			
+		case "delinfo.tm0": 
+			site = "DelInfoServlet";   // ID 체크
+			break;
+			
+		case "getuserinfo.tm0": 
+			site = "GetInfoServlet";   // 사용자 정보 확인
+			break;
 		
 		default:
 			response.getWriter().append("error page");

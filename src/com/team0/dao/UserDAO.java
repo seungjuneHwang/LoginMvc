@@ -9,6 +9,18 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.team0.db.DBConn;
 import com.team0.vo.UserVO;
 
+/*
+ * 수정 쿼리
+ * update user set name = '일' where u_idx = 3;
+ * 
+ * 삭제 쿼리
+ * delete from user where u_idx = 16
+ * 
+ * 추가 쿼리
+ * insert into user(name, phone, email, pw)
+	values ('빅데이터', '010-1111-1111', 'aa@aa.com', '123')
+ */
+
 public class UserDAO {
 	public static void InsertUser(UserVO vo) throws Exception {
 		// DB 접속
@@ -21,6 +33,20 @@ public class UserDAO {
 		pstmt.setString(2, vo.getPhone());
 		pstmt.setString(3, vo.getEmail());
 		pstmt.setString(4, vo.getPw());
+		
+		// 쿼리 실행
+		pstmt.executeUpdate();
+		db.close();
+	}
+	
+	// 사용자 정보 삭제
+	public static void delInfo(String u_idx) throws Exception {
+		// DB 접속
+		Connection db = DBConn.getConnection();
+		
+		String sql  = "delete from user where u_idx = ?";
+		PreparedStatement pstmt = db.prepareStatement(sql);
+		pstmt.setString(1, u_idx);
 		
 		// 쿼리 실행
 		pstmt.executeUpdate();
@@ -44,7 +70,28 @@ public class UserDAO {
 		db.close();
 		return ret;
 	}
-	
+
+	public static UserVO getUserInfo(String u_idx) throws Exception {
+		// DB 접속
+		Connection db = DBConn.getConnection();
+		// 쿼리 날려서 유저 정보를 검색
+		String sql  = "select * from user where u_idx = ?";
+		PreparedStatement pstmt = db.prepareStatement(sql);
+		pstmt.setString(1, u_idx);
+		
+		UserVO vo = null;   // 사용자 정보를 담는 객체
+		ResultSet rs = pstmt.executeQuery();
+		if (rs.next()) {
+			vo = new UserVO();
+			vo.setU_idx(rs.getInt("u_idx"));
+			vo.setName(rs.getString("name"));
+			vo.setEmail(rs.getString("email"));
+			vo.setPhone(rs.getString("phone"));
+			vo.setPw(rs.getString("pw"));
+		}	
+		db.close();
+		return vo;
+	}
 	
 	// String email, pw 를 매개변수로 넣어서 UserVO 값을 반환
 	// 들어가는 매개 변수 String email, String pw
