@@ -92,6 +92,12 @@ public class ControllerServlet extends HttpServlet {
 		case "getuserinfo.tm0": 
 			site = "GetInfoServlet";   // 사용자 정보 확인
 			break;
+			
+			// 추가로 작성 하세요.
+		case "updateinfo.tm0": 
+			site = "UpdateInfoServlet";   // 사용자 정보 수정 
+			break;
+		
 		
 		default:
 			response.getWriter().append("error page");

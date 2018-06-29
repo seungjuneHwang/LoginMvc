@@ -39,6 +39,25 @@ public class UserDAO {
 		db.close();
 	}
 	
+
+	//사용자 정보 수정
+	public static void updateInfo(UserVO vo) throws Exception {
+		// DB 접속
+		Connection db = DBConn.getConnection();
+		// 쿼리 날려서 유저 정보를 삽입
+		String sql  = "update user set name=?, phone=?, email=?, pw=? where u_idx=?";
+		PreparedStatement pstmt = db.prepareStatement(sql);
+		pstmt.setString(1, vo.getName());    // 이름
+		pstmt.setString(2, vo.getPhone());   // 전화번호
+		pstmt.setString(3, vo.getEmail());   // 이메일
+		pstmt.setString(4, vo.getPw());     // 비밀번호
+		pstmt.setInt(5, vo.getU_idx());    // 사용자 번호
+		
+		// 쿼리 실행
+		pstmt.executeUpdate();
+		db.close();
+	}
+	
 	// 사용자 정보 삭제
 	public static void delInfo(String u_idx) throws Exception {
 		// DB 접속

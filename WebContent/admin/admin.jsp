@@ -42,9 +42,9 @@
 <a href="<%=path %>/logout.tm0">로그아웃</a>
   <h2>관리자님 안녕하세요</h2>
   <p>회원 정보 입니다.</p>     
-  <button type="button" class="btn btn-warning" onclick="updateInfo()" data-toggle="modal" data-target="#myModal">수정</button>
+  <button type="button" class="btn btn-warning" onclick="getUserInfo()">수정</button>
   <button type="button" class="btn btn-danger" onclick="delInfo()">삭제</button>
-  <button type="button" class="btn btn-danger" onclick="getUserInfo()">라디오 테스트</button>         
+<!--   <button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#myModal">라디오 테스트</button>          -->
   <table class="table table-hover">
     <thead>
       <tr>
@@ -100,7 +100,7 @@
 		  </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-warning" data-dismiss="modal">저장</button>
+          <button type="button" class="btn btn-warning" onclick="updateInfo()" data-dismiss="modal">저장</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
         </div>
       </div>
@@ -133,7 +133,7 @@ function getUserInfo() {
             	$("#email").val(test[3]);
             	$("#phone").val(test[4]);
             	$("#pwd").val(test[5]);
-            	
+            	4
             	$("#myModal").modal('show');
 //             	alert("정보 불러 '오기' 성공");
             } else { 
@@ -144,28 +144,35 @@ function getUserInfo() {
 }
 
 
-
-
-
-
 function updateInfo() {
 	var u_idx = $('input[name=opt]:checked').val();
-// 	alert(u_idx + " 번호를 수정 해야함");
-// 	return ;
+	var name = $("#name").val();   // 모달에서 id 값이 name 인 곳에 값 설정
+	var email = $("#email").val();
+	var phone = $("#phone").val();
+	var pw = $("#pwd").val();
+//  	alert(u_idx + " 번호를 수정 해야함");
+//  	return ;
 	// ajax 사용
 	var path = getContextPath();
     $.ajax({
         type: 'POST',
-        url: path + suburl,
+        url: path + "/updateinfo.tm0",
         data: {
-            "u_idx" : u_idx
+            "u_idx" : u_idx,
+            "name" : name,
+            "email" : email,
+            "phone" : phone,
+            "pw" : pw
         },
         success: function(data){
         	console.log(data);
             if($.trim(data) == 'OK'){
-            	console.log('수정이나 삭제완료');
+            	console.log('수정 완료');
+            	alert("수정이 완료 되었습니다.");
+            	// 페이지 새로 고침
+            	location.reload();
             } else { 
-            	console.log('서버 에러');
+            	console.log('수정 서버 에러');
             }
         }, 
     });    //end ajax 
